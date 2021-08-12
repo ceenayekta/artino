@@ -6,7 +6,7 @@ import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
 const useStyles = makeStyles((theme) => ({
   listItemText: {
-    textAlign: 'right'
+    // textAlign: 'right'
   }
 }))
 
@@ -15,7 +15,7 @@ export const MenuItemsList = () => {
 
   return (
   <div>
-    <Link href="/admin/dashboard/products">
+    <Link underline='none' color='textSecondary' href="/admin/dashboard/products">
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
@@ -23,7 +23,7 @@ export const MenuItemsList = () => {
         <ListItemText primary="محصولات" className={classes.listItemText}/>
       </ListItem>
     </Link>
-    <Link href="/admin/dashboard/categories">
+    <Link underline='none' color='textSecondary' href="/admin/dashboard/categories">
       <ListItem button>
         <ListItemIcon>
           <LabelRoundedIcon />
@@ -31,13 +31,14 @@ export const MenuItemsList = () => {
         <ListItemText primary="دسته بندی ها" className={classes.listItemText}/>
       </ListItem>
     </Link>
-
-    <ListItem button>
-      <ListItemIcon>
-        <ExitToAppRoundedIcon />
-      </ListItemIcon>
-      <ListItemText primary="خروج از حساب" className={classes.listItemText}/>
-    </ListItem>
+    <Link underline='none' color='textSecondary' href="/">
+      <ListItem button>
+        <ListItemIcon>
+          <ExitToAppRoundedIcon />
+        </ListItemIcon>
+        <ListItemText primary="خروج از حساب" className={classes.listItemText}/>
+      </ListItem>
+    </Link>
   </div>
   )
 };

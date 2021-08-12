@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TextInput({ label, error, setValue, value }) {
+export default function TextInput({ label, error, setValue, value, type, className }) {
   const classes = useStyles();
   setValue(value)
   const handleChange = (event) => {
@@ -16,6 +16,6 @@ export default function TextInput({ label, error, setValue, value }) {
   };
 
   return (
-    <TextField value={value} error={error} onChange={handleChange} label={label} variant="outlined" className={classes.nameInput} />
+    <TextField type={type || 'text'} value={value} error={error} onChange={handleChange} label={label} variant="outlined" className={`${classes.nameInput} ${className}`} />
   );
 }

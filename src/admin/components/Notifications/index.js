@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import Button from '@material-ui/core/Button';
+import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,11 +26,6 @@ export default function CustomizedSnackbars({ notificationText, severity, open, 
     }
     clearUp(false)
   };
-
-  // useEffect(() => {
-  //   const timer = setInterval(clearUp(false), duration);
-  //   return () => clearInterval(timer);
-  // }, []);
 
   return (
     <div className={classes.root}>

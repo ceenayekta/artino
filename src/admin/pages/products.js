@@ -1,8 +1,11 @@
 import React from 'react'
+import Dashboard from '../components/Dashboard'
 import ProductsPageContent from '../PagesContent/ProductsPage'
 
-export const Products = () => {
+export const ProductsPage = () => {
   return (
-    <ProductsPageContent />
+    <Dashboard>
+      <ProductsPageContent />
+    </Dashboard>
   )
 }

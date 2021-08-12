@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   appBarShift: {
-    marginRight: drawerWidth,
+    marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingleft: 24, // keep right padding when drawer closed
   },
   menuButton: {
     margin: 'auto',

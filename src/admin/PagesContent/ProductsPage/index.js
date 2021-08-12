@@ -1,95 +1,96 @@
-import React, { useEffect, useState } from 'react'
-import { Grid, makeStyles, Paper, TableCell, TableRow } from '@material-ui/core'
-import Dashboard from '../../components/Dashboard'
-import CustomTable from '../../components/Table'
-import TableActions from '../../components/Table/TableActions'
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Grid,
+  Link,
+  makeStyles,
+  Paper,
+} from "@material-ui/core";
+import LaunchIcon from "@material-ui/icons/Launch";
+import Title from "../../components/Title";
+import ProductsTableData from "./ProductsTableData";
+import Notifications from '../../components/Notifications'
 
-import axios from 'axios';
+import { getProductsList } from "../../utils/productsUtils";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   TableCell: {
-    textAlign: 'center'
+    textAlign: "center",
   },
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
   },
-  fixedHeight: {
-    height: 240,
+  submitButton: {
+    padding: theme.spacing(2),
+    width: "100%",
   },
-}))
-
-
+  formContainer: {
+    width: "25rem",
+  },
+  buttonText: {
+    margin: "0 16px 0 0",
+  },
+}));
 
 const ProductsPageContent = () => {
+  const classes = useStyles();
 
-  const [data, setData] = useState([])
+  const [productsList, setProductsList] = useState([]);
   useEffect(() => {
-    axios.get('http://127.0.0.1:8080/api/products')
-    .then(res => setData(res.data))
-    .catch(err => setData(data)) 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    getProductsList({ productsList, setProductsList });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const editHandler = (id) => {
-    // axios.delete(`http://127.0.0.1:8080/api/categories/${id}`)
-    console.log(id)
-  }
-  const deleteHandler = (id) => {
-    axios.delete(`http://127.0.0.1:8080/api/products/${id}`)
-    .then(() => {
-      axios.get('http://127.0.0.1:8080/api/products')
-      .then(res => setData(res.data))
-      .catch(err => setData(data)) 
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
+  const [isAnyError, setIsAnyError] = useState(false);
+  const [isAnySuccess, setIsAnySuccess] = useState(false);
+  const [errorText, setErrorText] = useState("");
+  const [successText, setSuccessText] = useState("");
 
-    const classes = useStyles();
-    const tableData = data.map((data, index) => (
-        <TableRow key={data._id}>
-          <TableCell className={classes.TableCell}>{index + 1}</TableCell>
-          {/* change the src to {data.image} later */}
-          <TableCell className={classes.TableCell}><img alt="/asset/1.jpg" src="/asset/1.jpg" width="100px"/></TableCell>
-          <TableCell className={classes.TableCell}>{data.name}</TableCell>
-          <TableCell className={classes.TableCell}>{data.price}</TableCell>
-          <TableCell className={classes.TableCell}>{data.discount}</TableCell>
-          <TableCell className={classes.TableCell}>
-            <TableActions editHandler={() => editHandler(data._id)} deleteHandler={() => deleteHandler(data._id)} />
-          </TableCell>
-        </TableRow>
-      ))
+  const productsPageState = {
+    productsList,
+    setProductsList,
+    isAnyError,
+    setIsAnyError,
+    isAnySuccess,
+    setIsAnySuccess,
+    errorText,
+    setErrorText,
+    successText,
+    setSuccessText,
+  };
 
-    return (
-        <Dashboard>
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={4} lg={3}>
-                <Paper>
-                    {/* <Deposits /> */}
-                </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                    <CustomTable
-                    tableName={"محصولات"}
-                    tableTitles={[
-                        "ردیف",
-                        "عکس",
-                        "نام",
-                        "قیمت",
-                        "تخفیف",
-                    ]}
-                    tableData={tableData}
-                    />
-                </Paper>
-                </Grid>
-            </Grid>
-        </Dashboard>
-    )
-}
+  return (
+    <>
+      <Grid container spacing={3}>
+        <Grid item className={classes.formContainer}>
+          <Paper className={classes.paper}>
+            <Link href="/admin/dashboard/add-new-product" underline="none">
+              <Button
+                type="submit"
+                variant="outlined"
+                color="primary"
+                className={classes.submitButton}
+              >
+                <LaunchIcon color="primary" />
+                <Title className={classes.buttonText}>
+                  افزودن محصول جدید به لیست
+                </Title>
+              </Button>
+            </Link>
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <ProductsTableData productsPageState={productsPageState} />
+          </Paper>
+        </Grid>
+      </Grid>
+      {isAnyError && <Notifications severity="error" notificationText={errorText} open={isAnyError} clearUp={setIsAnyError} duration={6000} />}
+      {isAnySuccess && <Notifications severity="success" notificationText={successText} open={isAnySuccess} clearUp={setIsAnySuccess} duration={6000} />}
+    </>
+  );
+};
 
-export default ProductsPageContent
+export default ProductsPageContent;

@@ -1,9 +1,8 @@
 import { Button, makeStyles } from '@material-ui/core'
 import React, { useState } from 'react'
-import Title from '../../components/Dashboard/Title'
+import Title from '../../components/Title'
 import SelectInput from '../../components/Input/SelectInput'
 import TextInput from '../../components/Input/TextInput'
-import Notifications from '../../components/Notifications'
 import { createHandler } from '../../utils/categoriesUtils'
 
 const useStyles = makeStyles(theme => ({    
@@ -23,16 +22,17 @@ const Form = ({ categoriesPageState }) => {
   const [createdName, setCreatedName] = useState("");
   const [createdParent, setCreatedParent] = useState("");
 
+
   const {
     categoriesList,
     // setCategoriesList,
     isAnyError,
-    setIsAnyError, 
-    isAnySuccess,
-    setIsAnySuccess, 
-    errorText, 
+    // setIsAnyError, 
+    // isAnySuccess,
+    // setIsAnySuccess, 
+    // errorText, 
     // setErrorText,
-    successText, 
+    // successText, 
     // setSuccessText,
   } = categoriesPageState;
 
@@ -61,8 +61,6 @@ const Form = ({ categoriesPageState }) => {
         </div>
         <Button type="submit" variant="outlined" color="primary" className={classes.submitButton}>افزودن</Button>
       </form>
-      {isAnyError && <Notifications severity="error" notificationText={errorText} open={isAnyError} clearUp={setIsAnyError} duration={6000} />}
-      {isAnySuccess && <Notifications severity="success" notificationText={successText} open={isAnySuccess} clearUp={setIsAnySuccess} duration={6000} />}
     </>
   )
 }

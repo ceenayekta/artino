@@ -24,7 +24,7 @@ export const createHandler = (formState) => {
     createdParent,
     setCreatedParent,
   } = formState;
-
+  console.log(createdParent.name)
   if (createdName) {
     setIsAnyError(false);
     //check if category with createdName already exists
@@ -36,7 +36,7 @@ export const createHandler = (formState) => {
       categoriesApi
         .create({
           name: createdName,
-          parent: createdParent,
+          parent: createdParent.name,
         })
         .then(() => {
           getCategoriesList({ categoriesList, setCategoriesList });
@@ -87,7 +87,7 @@ export const deleteHandler = (tableDataState, id) => {
     .then((res) => {
       // also delete every category that the deleted data name was its parent
       categoriesList.forEach((category) => {
-        if (category.parent === res.data.name) deleteHandler(category._id);
+        if (category.parent === res.data.name) deleteHandler(tableDataState, category._id);
       });
       setIsAnyError(false);
       setIsAnySuccess(true);
@@ -168,7 +168,7 @@ export const submitEdit = (tableDataState, id) => {
       categoriesApi
         .update(id, {
           name: editedName,
-          parent: editedParent,
+          parent: editedParent.name,
         })
         .then((res) => {
           // also update every category that the updated data name was its parent

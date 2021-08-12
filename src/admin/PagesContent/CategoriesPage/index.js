@@ -4,10 +4,10 @@ import {
   makeStyles,
   Paper,
 } from "@material-ui/core";
-import Dashboard from "../../components/Dashboard";
 import Form from "./Form";
-import TableData from './TableData'
+import CategoriesTableData from './CategoriesTableData'
 import { getCategoriesList } from "../../utils/categoriesUtils";
+import Notifications from '../../components/Notifications'
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -53,7 +53,7 @@ const CategoriesPageContent = () => {
   }
 
   return (
-    <Dashboard>
+    <>
       <Grid container spacing={3}>
         <Grid item className={classes.formContainer}>
           <Paper className={classes.paper}>
@@ -62,11 +62,13 @@ const CategoriesPageContent = () => {
         </Grid>
         <Grid item xs={12} className={classes.tableDataContainer}>
           <Paper className={classes.paper}>
-            <TableData categoriesPageState={categoriesPageState} />
+            <CategoriesTableData categoriesPageState={categoriesPageState} />
           </Paper>
         </Grid>
       </Grid>
-    </Dashboard>
+      {isAnyError && <Notifications severity="error" notificationText={errorText} open={isAnyError} clearUp={setIsAnyError} duration={6000} />}
+      {isAnySuccess && <Notifications severity="success" notificationText={successText} open={isAnySuccess} clearUp={setIsAnySuccess} duration={6000} />}
+    </>
   );
 };
 

@@ -1,8 +1,11 @@
 import React from 'react'
+import Dashboard from '../components/Dashboard'
 import CategoriesPageContent from '../PagesContent/CategoriesPage'
 
-export const Categories = () => {
+export const CategoriesPage = () => {
   return (
-    <CategoriesPageContent />
+    <Dashboard>
+      <CategoriesPageContent />
+    </Dashboard>
   )
 }

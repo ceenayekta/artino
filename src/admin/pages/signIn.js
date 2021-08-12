@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SignIn = () =>  {
+export const SignInPage = () =>  {
   const classes = useStyles();
 
   return (

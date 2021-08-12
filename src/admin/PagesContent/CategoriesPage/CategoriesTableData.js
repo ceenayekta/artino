@@ -6,7 +6,6 @@ import SelectInput from '../../components/Input/SelectInput';
 import TextInput from '../../components/Input/TextInput';
 import CustomTable from '../../components/Table'
 import TableActions from '../../components/Table/TableActions';
-import Notifications from '../../components/Notifications'
 import { cancelEdit, deleteHandler, editHandler, submitEdit } from '../../utils/categoriesUtils';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const DataTable = ({ categoriesPageState }) => {
+const CategoriesTableData = ({ categoriesPageState }) => {
   const classes = useStyles();
 
   const [editId, setEditId] = useState("");
@@ -26,12 +25,12 @@ const DataTable = ({ categoriesPageState }) => {
     categoriesList,
     // setCategoriesList,
     isAnyError,
-    setIsAnyError, 
-    isAnySuccess,
-    setIsAnySuccess, 
-    errorText, 
+    // setIsAnyError, 
+    // isAnySuccess,
+    // setIsAnySuccess, 
+    // errorText, 
     // setErrorText,
-    successText, 
+    // successText, 
     // setSuccessText,
   } = categoriesPageState;
   
@@ -111,11 +110,9 @@ const DataTable = ({ categoriesPageState }) => {
               tableTitles={["ردیف", "نام دسته بندی", "دسته بندی والد"]}
               tableData={tableData}
           />
-          {isAnyError ? <Notifications severity="error" notificationText={errorText} open={isAnyError} clearUp={setIsAnyError} duration={6000} /> : null}
-          {isAnySuccess ? <Notifications severity="success" notificationText={successText} open={isAnySuccess} clearUp={setIsAnySuccess} duration={6000} /> : null}
         </>
         
     )
 }
 
-export default DataTable
+export default CategoriesTableData

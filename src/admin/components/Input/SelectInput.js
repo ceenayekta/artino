@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SelectInput({ label, selectList, value, setValue }) {
+export default function SelectInput({ label, selectList, value, setValue, noMainCategory }) {
   const classes = useStyles();
   setValue(value)
   const handleChange = (event) => {
@@ -30,10 +30,12 @@ export default function SelectInput({ label, selectList, value, setValue }) {
           onChange={handleChange}
           label={label}
         >
-          <MenuItem value="">
-            <em>*اصلی*</em>
-          </MenuItem>
-          {selectList.map(data => <MenuItem value={data.name}>{data.name}</MenuItem>)}
+          {!noMainCategory ?
+            <MenuItem value="">
+              <em>*اصلی*</em>
+            </MenuItem>
+          : null}
+          {selectList.map(data => <MenuItem value={data}>{data.name}</MenuItem>)}
         </Select>
       </FormControl>
   );
