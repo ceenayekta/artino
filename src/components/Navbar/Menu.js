@@ -156,9 +156,8 @@ export const NavbarMenu = () => {
     (category) => category.isMainCategory
   );
   const menuItems = mainCategories.map((category, index) => (
-    <div>
+    <div key={category._id}>
       <MenuItem
-        key={category._id}
         className={classes.menuItem}
         onClick={(event) => handleChildMenuOpen(event, index, category._id)}
       >

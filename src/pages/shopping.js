@@ -148,7 +148,7 @@ export const ShoppingPage = () => {
 
   const addToCard = () => {
     const storedProducts = JSON.parse(localStorage.getItem("shoppingCard"));
-    if (!storedProducts.includes(product)) {
+    if (!storedProducts.some(prod => prod._id === product._id)) {
       storedProducts.push(product);
       setNewAdd(true);
     }
@@ -195,8 +195,8 @@ export const ShoppingPage = () => {
                   <Typography className={classes.description}>
                     {product.description}
                   </Typography>
-                  {product.specifications.split(" ").map((specification) => (
-                    <div className={classes.specificationsContainer}>
+                  {product.specifications.split(" ").map((specification, index) => (
+                    <div key={index} className={classes.specificationsContainer}>
                       <FiberManualRecordIcon className={classes.point} />
                       <Typography className={classes.specifications}>
                         {specification}

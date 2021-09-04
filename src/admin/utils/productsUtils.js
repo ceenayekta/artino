@@ -16,14 +16,23 @@ export const createHandler = (formState) => {
     setErrorText,
     setSuccessText,
     newProductName,
+    setNewProductName,
     selectedCategory,
+    setSelectedCategory,
     price,
+    setPrice,
     discount,
+    setDiscount,
     inventory,
+    setInventory,
     description,
+    setDescription,
     specifications,
+    setSpecifications,
     previewProductImage,
+    setPreviewProductImage,
     previewProductGallery,
+    setPreviewProductGallery,
   } = formState;
 
   if (parseInt(price, 10) < parseInt(discount, 10)) {
@@ -66,17 +75,17 @@ export const createHandler = (formState) => {
         );
         uploadProductGallery(res.data._id, formState);
         uploadProductImage(res.data._id, formState);
-        // clearAll([
-        //   setNewProductName,
-        //   setSelectedCategory,
-        //   setPrice,
-        //   setDiscount,
-        //   setInventory,
-        //   setDescription,
-        //   setSpecifications,
-        //   setPreviewProductImage,
-        //   setPreviewProductGallery,
-        // ])
+        clearAll([
+          setNewProductName,
+          setSelectedCategory,
+          setPrice,
+          setDiscount,
+          setInventory,
+          setDescription,
+          setSpecifications,
+          setPreviewProductImage,
+          setPreviewProductGallery,
+        ])
       })
       .catch((err) => {
         popError(

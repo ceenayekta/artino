@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { getOneProduct } from "../../actions/apis";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -71,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cardContainer: {
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
   },
@@ -80,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
   productImage: {
     width: '4rem',
     height: '4rem',
+  },
+  deleteIconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   emptyCard: {
     width: '100%',
@@ -97,7 +102,6 @@ const useStyles = makeStyles((theme) => ({
   cardButtonsContainer: {
     padding: '1.5rem 1rem 1rem 1rem',
     display: 'flex',
-    minWidth: '20rem',
   },
   payButton: {
     fontWeight: '600',
@@ -152,7 +156,7 @@ const Appbar = ({ newAdd, setNewAdd }) => {
   }
 
   const productsInCard = shoppingCard.map((product, index) => (
-    <MenuItem className={classes.card}>
+    <MenuItem key={product._id} className={classes.card}>
       <div className={classes.cardContainer}>
         <div className={classes.cardProductContainer}>
           <img alt={product.name} src={product.pictureSrc} className={classes.productImage} />
@@ -163,9 +167,11 @@ const Appbar = ({ newAdd, setNewAdd }) => {
             </Typography>
           </div>
         </div>
-        <IconButton color="secondary" onClick={() => removeFromCard(index)}>
-          <DeleteForeverIcon />
-        </IconButton>
+        <div className={classes.deleteIconContainer}>
+          <IconButton color="secondary" onClick={() => removeFromCard(index)} className={classes.deleteIcon}>
+            <DeleteForeverIcon />
+          </IconButton>
+        </div>
       </div>
     </MenuItem>
   ));
