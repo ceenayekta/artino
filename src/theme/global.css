@@ -1,3 +1,8 @@
+body {
+  margin: 0;
+  background-color: #F5F5F5;
+}
+
 .swiper-button-prev,
 .swiper-button-next {
   width: 2.5rem;

@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  Divider,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -54,18 +55,24 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  badge: {
+    '& .MuiBadge-badge': {
+      color: 'white',
+    },
+  },
   divider: {
-    width: "100%",
-    height: "0.25rem",
-    backgroundColor: theme.palette.primary.main,
+    margin: '1rem',
   },
   card: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    padding: '0.5rem 1rem',
     minWidth: '20rem',
     '&:hover': {
       backgroundColor: 'transparent',
     },
+  },
+  cardContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   cardProductContainer: {
     display: 'flex',
@@ -74,11 +81,37 @@ const useStyles = makeStyles((theme) => ({
     width: '4rem',
     height: '4rem',
   },
+  emptyCard: {
+    width: '100%',
+    textAlign: 'center',
+    marginTop: '10px',
+    color: theme.palette.secondary.light,
+  },
   productDetails: {
     marginLeft: '0.5rem',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'start',
+    justifyContent: 'center',
+  },
+  cardButtonsContainer: {
+    padding: '1.5rem 1rem 1rem 1rem',
+    display: 'flex',
+    minWidth: '20rem',
+  },
+  payButton: {
+    fontWeight: '600',
+    fontSize: '1rem',
+    height: '3rem',
+    color: 'white',
+    flex: 4,
+  },
+  clearButton: {
+    fontWeight: '600',
+    fontSize: '1rem',
+    height: '3rem',
+    flex: 3,
+    marginLeft: '1rem',
   },
 }));
 
@@ -120,18 +153,20 @@ const Appbar = ({ newAdd, setNewAdd }) => {
 
   const productsInCard = shoppingCard.map((product, index) => (
     <MenuItem className={classes.card}>
-      <div className={classes.cardProductContainer}>
-        <img alt={product.name} src={product.pictureSrc} className={classes.productImage} />
-        <div className={classes.productDetails}>
-          <Typography className={classes.name}>{product.name}</Typography>
-          <Typography className={classes.price}>
-            <b>قیمت: {product.price - product.discount} تومان</b>
-          </Typography>
+      <div className={classes.cardContainer}>
+        <div className={classes.cardProductContainer}>
+          <img alt={product.name} src={product.pictureSrc} className={classes.productImage} />
+          <div className={classes.productDetails}>
+            <Typography className={classes.name}>{product.name}</Typography>
+            <Typography className={classes.price}>
+              <b>قیمت: {product.price - product.discount} تومان</b>
+            </Typography>
+          </div>
         </div>
+        <IconButton color="secondary" onClick={() => removeFromCard(index)}>
+          <DeleteForeverIcon />
+        </IconButton>
       </div>
-      <IconButton color="secondary" onClick={() => removeFromCard(index)}>
-        <DeleteForeverIcon />
-      </IconButton>
     </MenuItem>
   ));
 
@@ -157,7 +192,7 @@ const Appbar = ({ newAdd, setNewAdd }) => {
           <div className={classes.grow} />
           <div className={classes.icons}>
             <IconButton color="inherit" onClick={handleClick}>
-              <Badge badgeContent={shoppingCard.length} color="secondary">
+              <Badge badgeContent={shoppingCard.length} color="secondary" className={classes.badge}>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -177,24 +212,30 @@ const Appbar = ({ newAdd, setNewAdd }) => {
                 horizontal: "right",
               }}
             >
+              {shoppingCard.length <= 0 && (
+                <MenuItem className={classes.card}>
+                  <Typography className={classes.emptyCard}>سبد خرید شما خالی است.</Typography>
+                </MenuItem>
+              )}
               {productsInCard}
-              <li className={classes.card}>
+              <Divider variant="middle" className={classes.divider} />
+              <MenuItem className={`${classes.card} `}>
                 <Button
                   variant="contained"
                   color="secondary"
-                  className={classes.CTAButton}
+                  className={classes.payButton}
                   onClick={handleClose}
                 >
                   نهایی کردن و پرداخت
                 </Button>
                 <Button
-                  color="secondary"
-                  className={classes.CTAButton}
+                  color="primary"
+                  className={classes.clearButton}
                   onClick={clearCard}
                 >
-                  خالی کردن سبد خرید
+                  حذف همه
                 </Button>
-              </li>
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>

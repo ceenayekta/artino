@@ -1,5 +1,8 @@
 const themes = {
   direction: "rtl",
+  typography: {
+    fontFamily: '"Open Sans", Markazi Text, Roboto',
+  },
   palette: {
     primary: {
       light: "#ACDBEE",
