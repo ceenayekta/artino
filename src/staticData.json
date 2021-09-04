@@ -2,62 +2,19 @@
     "slider": [
         {
             "title": "گالری های آرتینو",
-            "image": "/asset/1.jpg"
+            "image": "/asset/exhibition.webp"
         },
         {
-            "title": "هنرمندان برگزیده",
-            "image": "/asset/2.jpg"
+            "title": "هنرمندان برگزیده این ماه",
+            "image": "/asset/top-artists.jpg"
         },
         {
             "title": "فروشگاه های معتبر",
-            "image": "/asset/3.jpg"
+            "image": "/asset/verified-shop.jpg"
         },
         {
             "title": "رویداد های متفاوت",
-            "image": "/asset/4.jpg"
-        }
-    ],
-
-    "products": [
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/5.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/6.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/7.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/8.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/9.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/10.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/11.jpg"
-        },
-        {
-            "title": "تابلوی نقاشی رنگ روغن",
-            "price": "100/000 t",
-            "image": "/asset/12.jpg"
+            "image": "/asset/events.jpg"
         }
     ]
 }

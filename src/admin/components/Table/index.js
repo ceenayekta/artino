@@ -1,6 +1,14 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Table, TableBody, TableCell, TableHead, TableRow, Link } from '@material-ui/core';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Link,
+} from "@material-ui/core";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -8,11 +16,11 @@ function preventDefault(event) {
 
 const useStyles = makeStyles((theme) => ({
   TableCell: {
-    textAlign: 'center'
+    textAlign: "center",
   },
   seeMore: {
     marginTop: theme.spacing(3),
-    textAlign: 'center'
+    textAlign: "center",
   },
 }));
 
@@ -21,20 +29,22 @@ export default function CustomTable({ tableName, tableTitles, tableData }) {
   return (
     <React.Fragment>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
-      {tableName}
+        {tableName}
       </Typography>
       <Table size="small">
         <TableHead>
           <TableRow>
-            {tableTitles.map(title => (
-              <TableCell key={title} className={classes.TableCell}><b>{title}</b></TableCell>
+            {tableTitles.map((title) => (
+              <TableCell key={title} className={classes.TableCell}>
+                <b>{title}</b>
+              </TableCell>
             ))}
-          <TableCell className={classes.TableCell}><b>عملیات</b></TableCell>
+            <TableCell className={classes.TableCell}>
+              <b>عملیات</b>
+            </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody >
-          {tableData}
-        </TableBody>
+        <TableBody>{tableData}</TableBody>
       </Table>
       <div className={classes.seeMore}>
         <Link color="primary" href="#" onClick={preventDefault}>

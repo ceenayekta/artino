@@ -1,6 +1,6 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   nameInput: {
@@ -8,14 +8,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TextInput({ label, error, setValue, value, type, className }) {
+export default function TextInput({
+  label,
+  error,
+  setValue,
+  value,
+  type,
+  className,
+  required,
+}) {
   const classes = useStyles();
-  setValue(value)
+  setValue(value);
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
   return (
-    <TextField type={type || 'text'} value={value} error={error} onChange={handleChange} label={label} variant="outlined" className={`${classes.nameInput} ${className}`} />
+    <TextField
+      required={required}
+      type={type || "text"}
+      value={value}
+      error={error}
+      onChange={handleChange}
+      label={label}
+      variant="outlined"
+      className={`${classes.nameInput} ${className}`}
+    />
   );
 }

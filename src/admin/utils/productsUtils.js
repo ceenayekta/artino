@@ -1,4 +1,6 @@
+import { popError, popSuccess } from "../../utils/global";
 import { productsApi } from "../api/actions";
+import { uploadProductGallery, uploadProductImage } from "./imagesUtils";
 
 export const getProductsList = ({ productsList, setProductsList }) => {
   productsApi
@@ -9,15 +11,178 @@ export const getProductsList = ({ productsList, setProductsList }) => {
 
 export const createHandler = (formState) => {
   const {
-    productsList,
-    // setProductsList,
-    // isAnyError,
     setIsAnyError,
-    // isAnySuccess,
     setIsAnySuccess,
-    // errorText,
     setErrorText,
-    // successText,
+    setSuccessText,
+    newProductName,
+    selectedCategory,
+    price,
+    discount,
+    inventory,
+    description,
+    specifications,
+    previewProductImage,
+    previewProductGallery,
+  } = formState;
+
+  if (parseInt(price, 10) < parseInt(discount, 10)) {
+    popError(
+      setIsAnyError,
+      setIsAnySuccess,
+      setErrorText,
+      "تخفیف وارد شده نمیتواند از قیمت بیشتر باشد !"
+    );
+    return;
+  }
+
+  if (
+    newProductName &&
+    selectedCategory &&
+    discount &&
+    inventory &&
+    description &&
+    specifications &&
+    previewProductImage &&
+    previewProductGallery
+  ) {
+    setIsAnyError(false);
+    productsApi
+      .create({
+        categoryId: selectedCategory._id,
+        name: newProductName,
+        price,
+        discount,
+        inventory,
+        description,
+        specifications,
+      })
+      .then((res) => {
+        popSuccess(
+          setIsAnyError,
+          setIsAnySuccess,
+          setSuccessText,
+          "محصول اضافه شد"
+        );
+        uploadProductGallery(res.data._id, formState);
+        uploadProductImage(res.data._id, formState);
+        // clearAll([
+        //   setNewProductName,
+        //   setSelectedCategory,
+        //   setPrice,
+        //   setDiscount,
+        //   setInventory,
+        //   setDescription,
+        //   setSpecifications,
+        //   setPreviewProductImage,
+        //   setPreviewProductGallery,
+        // ])
+      })
+      .catch((err) => {
+        popError(
+          setIsAnyError,
+          setIsAnySuccess,
+          setErrorText,
+          "خطای ارتباط با سرور !"
+        );
+      });
+  } else {
+    popError(
+      setIsAnyError,
+      setIsAnySuccess,
+      setErrorText,
+      "نام محصول جدید را وارد کنید !"
+    );
+  }
+};
+
+export const deleteHandler = (productsPageState, id) => {
+  const {
+    productsList,
+    setProductsList,
+    setIsAnyError,
+    setIsAnySuccess,
+    setErrorText,
+    setSuccessText,
+  } = productsPageState;
+
+  productsApi
+    .remove(id)
+    .then((res) => {
+      popSuccess(
+        setIsAnyError,
+        setIsAnySuccess,
+        setSuccessText,
+        "محصول مورد نظر حذف شد"
+      );
+    })
+    .catch((err) => {
+      popError(
+        setIsAnyError,
+        setIsAnySuccess,
+        setErrorText,
+        "حذف محصول با مشکل مواجه شد !"
+      );
+    })
+    .finally(() => getProductsList({ productsList, setProductsList }));
+};
+
+export const editHandler = (productsPageState, id) => {
+  const {
+    categoriesList,
+    setIsAnyError,
+    setIsAnySuccess,
+    setErrorText,
+    setNewProductName,
+    setSelectedCategory,
+    setPrice,
+    setDiscount,
+    setInventory,
+    setDescription,
+    setSpecifications,
+    // previewProductImage,
+    // setPreviewProductImage,
+    // previewProductGallery,
+    // setPreviewProductGallery,
+    setEditId,
+  } = productsPageState;
+
+  productsApi
+    .receiveOne(id)
+    .then((res) => {
+      setNewProductName(res.data.name);
+      setSelectedCategory(
+        categoriesList.find((category) => category._id === res.data.categoryId)
+      );
+      setPrice(res.data.price);
+      setDiscount(res.data.discount);
+      setInventory(res.data.inventory);
+      setDescription(res.data.description);
+      setSpecifications(res.data.specifications);
+      setEditId(id);
+    })
+    .catch((err) => {
+      setNewProductName("");
+      setSelectedCategory("");
+      setPrice("");
+      setDiscount("");
+      setInventory("");
+      setDescription("");
+      setSpecifications("");
+      popError(
+        setIsAnyError,
+        setIsAnySuccess,
+        setErrorText,
+        "خطای ارتباط با سرور !"
+      );
+    });
+};
+
+export const submitEdit = (productsPageState, id) => {
+  const {
+    setIsAnyError,
+    setIsAnySuccess,
+    setErrorText,
     setSuccessText,
     newProductName,
     setNewProductName,
@@ -33,38 +198,46 @@ export const createHandler = (formState) => {
     setDescription,
     specifications,
     setSpecifications,
-  } = formState;
+    setPreviewProductImage,
+    setPreviewProductGallery,
+  } = productsPageState;
 
-  if (newProductName && selectedCategory && discount && inventory && description && specifications) {
-    setIsAnyError(false);
-    //check if category with createdName already exists
-    if (productsList.find((product) => product.name === newProductName)) {
-      setIsAnyError(true);
-      setIsAnySuccess(false);
-      setErrorText(`محصول با نام ${newProductName} قبلا ایجاد شده است`);
-    } else {
-      productsApi
-        .create({
-          name: newProductName,
-          category_id: selectedCategory._id,
-          price,
-          discount,
-          inventory,
-          description,
-          specifications,
-        })
-        .then(() => {
-          setIsAnyError(false);
-          setIsAnySuccess(true);
-          setSuccessText("دسته بندی جدید با موفقیت ساخته شد");
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsAnyError(true);
-          setIsAnySuccess(false);
-          setErrorText("خطای ارتباط با سرور !");
-        })
-        .finally(() => clearAll([
+  if (parseInt(price, 10) < parseInt(discount, 10)) {
+    popError(
+      setIsAnyError,
+      setIsAnySuccess,
+      setErrorText,
+      "تخفیف وارد شده نمیتواند از قیمت بیشتر باشد !"
+    );
+    return;
+  }
+
+  if (
+    newProductName &&
+    selectedCategory &&
+    discount &&
+    inventory &&
+    description &&
+    specifications
+  ) {
+    productsApi
+      .update(id, {
+        categoryId: selectedCategory._id,
+        name: newProductName,
+        price,
+        discount,
+        inventory,
+        description,
+        specifications,
+      })
+      .then((res) => {
+        popSuccess(
+          setIsAnyError,
+          setIsAnySuccess,
+          setSuccessText,
+          "تغییرات بر روی مجصول مورد نظر انجام شد"
+        );
+        clearAll([
           setNewProductName,
           setSelectedCategory,
           setPrice,
@@ -72,184 +245,28 @@ export const createHandler = (formState) => {
           setInventory,
           setDescription,
           setSpecifications,
-        ]));
-    }
+          setPreviewProductImage,
+          setPreviewProductGallery,
+        ]);
+      })
+      .catch((err) => {
+        popError(
+          setIsAnyError,
+          setIsAnySuccess,
+          setErrorText,
+          "اعمال تغییرات بر روی محصول با مشکل مواجه شد !"
+        );
+      });
   } else {
-    setIsAnyError(true);
-    setIsAnySuccess(false);
-    setErrorText("نام دسته بندی جدید را وارد کنید !");
+    popError(
+      setIsAnyError,
+      setIsAnySuccess,
+      setErrorText,
+      "نام دسته بندی را وارد کنید !"
+    );
   }
-};
-
-export const deleteHandler = (tableDataState, id) => {
-  const {
-    productsList,
-    setProductsList,
-    // isAnyError,
-    setIsAnyError,
-    // isAnySuccess,
-    setIsAnySuccess,
-    // errorText,
-    setErrorText,
-    // successText,
-    setSuccessText,
-    // editId,
-    // setEditId,
-    // editedName,
-    // setEditedName,
-    // editedParent,
-    // setEditedParent,
-  } = tableDataState;
-
-  productsApi
-    .remove(id)
-    .then((res) => {
-      setIsAnyError(false);
-      setIsAnySuccess(true);
-      setSuccessText("دسته بندی مورد نظر حذف شد");
-    })
-    .catch((err) => {
-      setIsAnyError(true);
-      setIsAnySuccess(false);
-      setErrorText("حذف دسته بندی با مشکل مواجه شد !");
-    })
-    .finally(() => getProductsList({ productsList, setProductsList }));
-};
-
-export const editHandler = (tableDataState, id) => {
-  const {
-    // productsList,
-    // setProductsList,
-    // isAnyError,
-    setIsAnyError,
-    // isAnySuccess,
-    setIsAnySuccess,
-    // errorText,
-    setErrorText,
-    // successText,
-    // setSuccessText,
-    // editId,
-    setEditId,
-    // editedName,
-    setEditedName,
-    // editedParent,
-    setEditedParent,
-  } = tableDataState;
-
-  productsApi
-    .receiveOne(id)
-    .then((res) => {
-      setEditedName(res.data.name);
-      setEditedParent(res.data.parent);
-      console.log(res.data.name)
-      setEditId(id);
-    })
-    .catch((err) => {
-      setEditedName("");
-      setEditedParent("");
-      setEditId("");
-      setIsAnyError(true);
-      setIsAnySuccess(false);
-      setErrorText("خطای ارتباط با سرور !");
-    });
-};
-
-export const submitEdit = (tableDataState, id) => {
-  const {
-    productsList,
-    setProductsList,
-    // isAnyError,
-    setIsAnyError,
-    // isAnySuccess,
-    setIsAnySuccess,
-    // errorText,
-    setErrorText,
-    // successText,
-    setSuccessText,
-    editId,
-    setEditId,
-    editedName,
-    setEditedName,
-    editedParent,
-    setEditedParent,
-  } = tableDataState;
-
-  if (editedName) {
-    //check if category with editedName already exists
-    if (productsList.find((category) => category.name === editedName && category._id !== editId)) {
-      setIsAnyError(true);
-      setIsAnySuccess(false);
-      setErrorText(`دسته بندی با نام ${editedName} قبلا ایجاد شده است`);
-    } else {
-      productsApi
-        .update(id, {
-          name: editedName,
-          parent: editedParent,
-        })
-        .then((res) => {
-          // also update every category that the updated data name was its parent
-          productsList.forEach((category) => {
-            if (category.parent === res.data.name)
-              productsApi
-                .update(category._id, {
-                  name: category.name,
-                  parent: editedName,
-                })
-                .then((res) => {})
-                .catch((err) => {});
-          });
-          setIsAnyError(false);
-          setIsAnySuccess(true);
-          setSuccessText("تغییرات بر روی دسته بندی مورد نظر انجام شد");
-        })
-        .catch((err) => {
-          setIsAnyError(true);
-          setIsAnySuccess(false);
-          setErrorText("اعمال تغییرات بر روی دسته بندی با مشکل مواجه شد !");
-        })
-        .finally(() => {
-          setEditId("");
-          setEditedName("");
-          setEditedParent("");
-          getProductsList({ productsList, setProductsList });
-        });
-    }
-  } else {
-    setIsAnyError(true);
-    setIsAnySuccess(false);
-    setErrorText("نام دسته بندی را وارد کنید !");
-  }
-};
-
-export const cancelEdit = (tableDataState) => {
-  const {
-    // productsList,
-    // setProductsList,
-    // isAnyError,
-    setIsAnyError,
-    // isAnySuccess,
-    setIsAnySuccess,
-    // errorText,
-    // setErrorText,
-    // successText,
-    setSuccessText,
-    // editId,
-    setEditId,
-    // editedName,
-    setEditedName,
-    // editedParent,
-    setEditedParent,
-  } = tableDataState;
-
-  setEditId("");
-  setEditedName("");
-  setEditedParent("");
-
-  setIsAnyError(false);
-  setIsAnySuccess(true);
-  setSuccessText("تغییرات بر روی دسته بندی، لغو شد");
 };
 
 export const clearAll = (arrayOfSetters) => {
-  arrayOfSetters.map(setter => setter(''))
-}
+  arrayOfSetters.map((setter) => setter(""));
+};

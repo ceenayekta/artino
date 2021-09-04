@@ -1,15 +1,15 @@
-import { PrimarySearchAppBar } from './Navbar'
-import { AutoGrid } from './Menu'
+import Appbar from "./Appbar";
+import Menu from "./Menu";
 
-import React from 'react'
+import React from "react";
 
-const navbar = () => {
+const Navbar = ({ newAdd, setNewAdd }) => {
   return (
     <div>
-      <PrimarySearchAppBar />
-      <AutoGrid />
+      <Appbar newAdd={newAdd} setNewAdd={setNewAdd} />
+      <Menu />
     </div>
-  )
-}
+  );
+};
 
-export default navbar
+export default Navbar;

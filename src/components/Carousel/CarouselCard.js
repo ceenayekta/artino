@@ -1,44 +1,70 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Card,
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Button,
-  Typography} from '@material-ui/core';
+  Typography,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    padding: "1rem",
+    height: "22rem",
+    width: "12rem",
+    borderRadius: "1rem",
+    boxShadow: "0 0 0 0",
   },
-  Button: {
-    marginRight: "auto"
-  }
+  cardArea: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "start",
+    flexDirection: "column",
+  },
+  image: {
+    maxHeight: "12rem",
+    flex: 3,
+  },
+  content: {
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "start",
+    flexDirection: "column",
+    flex: 2,
+  },
+  title: {
+    fontSize: "1.5rem",
+    fontWeight: "",
+    lineHeight: "2.5rem",
+    flex: 1,
+  },
+  price: {
+    fontSize: "1.25rem",
+    fontWeight: "600",
+    lineHeight: "2.5rem",
+    flex: 1,
+  },
 });
 
-export const CarouselCard = ({imgSrc, title, price}) => {
+export const CarouselCard = ({ imgSrc, imgAlt, title, price }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea className={classes.cardArea}>
         <CardMedia
           component="img"
-          alt="Contemplative Reptile"
-          height="140"
+          alt={imgAlt}
           image={imgSrc}
-          title="Contemplative Reptile"
+          className={classes.image}
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2"> {title} </Typography>
-          <Typography gutterBottom variant="span" component="h2"> {price} </Typography>
+        <CardContent className={classes.content}>
+          <Typography className={classes.title}> {title} </Typography>
+          <Typography className={classes.price}> {price} تومان </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button className={classes.Button} size="small" color="primary">
-          جزئیات بیشتر
-        </Button>
-      </CardActions>
     </Card>
   );
-}
+};

@@ -1,9 +1,9 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -13,30 +13,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SelectInput({ label, selectList, value, setValue, noMainCategory }) {
+export default function SelectInput({
+  label,
+  selectList,
+  value,
+  setValue,
+  required,
+}) {
   const classes = useStyles();
-  setValue(value)
+  setValue(value);
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
   return (
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={value}
-          onChange={handleChange}
-          label={label}
-        >
-          {!noMainCategory ?
-            <MenuItem value="">
-              <em>*اصلی*</em>
-            </MenuItem>
-          : null}
-          {selectList.map(data => <MenuItem value={data}>{data.name}</MenuItem>)}
-        </Select>
-      </FormControl>
+    <FormControl variant="outlined" className={classes.formControl}>
+      <InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={value}
+        onChange={handleChange}
+        label={label}
+        required={required}
+      >
+        <MenuItem value="">
+          <em>*اصلی*</em>
+        </MenuItem>
+        {selectList.map((data) => (
+          <MenuItem value={data}>{data.name}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

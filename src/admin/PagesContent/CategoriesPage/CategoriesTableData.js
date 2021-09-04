@@ -1,17 +1,22 @@
-import { IconButton, makeStyles, TableCell, TableRow } from '@material-ui/core';
-import React, { useState } from 'react'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import CancelIcon from '@material-ui/icons/Cancel'
-import SelectInput from '../../components/Input/SelectInput';
-import TextInput from '../../components/Input/TextInput';
-import CustomTable from '../../components/Table'
-import TableActions from '../../components/Table/TableActions';
-import { cancelEdit, deleteHandler, editHandler, submitEdit } from '../../utils/categoriesUtils';
+import { IconButton, makeStyles, TableCell, TableRow } from "@material-ui/core";
+import React, { useState } from "react";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+import SelectInput from "../../components/Input/SelectInput";
+import TextInput from "../../components/Input/TextInput";
+import CustomTable from "../../components/Table";
+import TableActions from "../../components/Table/TableActions";
+import {
+  cancelEdit,
+  deleteHandler,
+  editHandler,
+  submitEdit,
+} from "../../utils/categoriesUtils";
 
 const useStyles = makeStyles((theme) => ({
-    TableCell: {
-      textAlign: "center",
-    },
+  TableCell: {
+    textAlign: "center",
+  },
 }));
 
 const CategoriesTableData = ({ categoriesPageState }) => {
@@ -25,15 +30,15 @@ const CategoriesTableData = ({ categoriesPageState }) => {
     categoriesList,
     // setCategoriesList,
     isAnyError,
-    // setIsAnyError, 
+    // setIsAnyError,
     // isAnySuccess,
-    // setIsAnySuccess, 
-    // errorText, 
+    // setIsAnySuccess,
+    // errorText,
     // setErrorText,
-    // successText, 
+    // successText,
     // setSuccessText,
   } = categoriesPageState;
-  
+
   const tableDataState = {
     ...categoriesPageState,
     editId,
@@ -42,9 +47,12 @@ const CategoriesTableData = ({ categoriesPageState }) => {
     setEditedName,
     editedParent,
     setEditedParent,
-  }  
+  };
 
   const tableData = categoriesList.map((data, index) => {
+    const parentCategory = categoriesList.find(
+      (category) => category._id === data.parentId
+    );
     return editId === data._id ? (
       <TableRow key={data._id}>
         <TableCell className={classes.TableCell}>{index + 1}</TableCell>
@@ -62,16 +70,14 @@ const CategoriesTableData = ({ categoriesPageState }) => {
             setValue={setEditedParent}
             label="دسته بندی والد"
             selectList={categoriesList.filter(
-              (category) =>
-                category.name !== editedName && category.parent === ""
+              (category) => category._id !== editId && category.isMainCategory
             )}
           />
         </TableCell>
         <TableCell className={classes.TableCell}>
           <IconButton
-            onClick={() => submitEdit(tableDataState , data._id)}
+            onClick={() => submitEdit(tableDataState, data._id)}
             color="primary"
-            aria-label="upload picture"
             component="span"
           >
             <CheckCircleIcon />
@@ -79,7 +85,6 @@ const CategoriesTableData = ({ categoriesPageState }) => {
           <IconButton
             onClick={() => cancelEdit(tableDataState)}
             color="secondary"
-            aria-label="upload picture"
             component="span"
           >
             <CancelIcon />
@@ -91,28 +96,29 @@ const CategoriesTableData = ({ categoriesPageState }) => {
         <TableCell className={classes.TableCell}>{index + 1}</TableCell>
         <TableCell className={classes.TableCell}>{data.name}</TableCell>
         <TableCell className={classes.TableCell}>
-          {!data.parent ? " *اصلی* " : data.parent}
+          {data.isMainCategory ? " *اصلی* " : parentCategory.name}
         </TableCell>
         <TableCell className={classes.TableCell}>
           <TableActions
-            editHandler={() => editHandler(tableDataState , data._id)}
-            deleteHandler={() => deleteHandler(tableDataState , data._id)}
+            editHandler={() =>
+              editHandler(tableDataState, parentCategory, data._id)
+            }
+            deleteHandler={() => deleteHandler(tableDataState, data._id)}
           />
         </TableCell>
       </TableRow>
     );
   });
 
-    return (
-        <>
-          <CustomTable
-              tableName={"دسته بندی ها"}
-              tableTitles={["ردیف", "نام دسته بندی", "دسته بندی والد"]}
-              tableData={tableData}
-          />
-        </>
-        
-    )
-}
+  return (
+    <>
+      <CustomTable
+        tableName={"دسته بندی ها"}
+        tableTitles={["ردیف", "نام دسته بندی", "دسته بندی والد"]}
+        tableData={tableData}
+      />
+    </>
+  );
+};
 
-export default CategoriesTableData
+export default CategoriesTableData;

@@ -1,5 +1,5 @@
-export { SignInPage as adminSignInPage } from './signIn'
-export { DashboardPage as adminDashboardPage } from './dashboard'
-export { CategoriesPage as adminCategoriesPage } from './categories'
-export { ProductsPage as adminProductsPage } from './products'
-export { AddNewProductPage as adminAddNewProduct } from './addNewProduct'
+export { SignInPage as adminSignInPage } from "./signIn";
+export { DashboardPage as adminDashboardPage } from "./dashboard";
+export { CategoriesPage as adminCategoriesPage } from "./categories";
+export { ProductsPage as adminProductsPage } from "./products";
+export { AddNewProductPage as adminAddNewProduct } from "./addNewProduct";

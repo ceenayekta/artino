@@ -1,3 +1,3 @@
-export { homePage } from './home'
-export { productsPage } from './products'
-export { shoppingPage } from './shopping'
+export { HomePage } from "./home";
+export { ProductsPage } from "./products";
+export { ShoppingPage } from "./shopping";

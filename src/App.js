@@ -1,20 +1,25 @@
 import Navbar from './components/Navbar'
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { homePage, productsPage, shoppingPage } from './pages'
+import { HomePage, ProductsPage, ShoppingPage } from './pages'
 import { adminSignInPage, adminDashboardPage, adminProductsPage, adminCategoriesPage, adminAddNewProduct } from './admin/pages'
-import { ThemeProvider } from '@material-ui/styles'
-import { createMuiTheme } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
+import theme from './theme'
+import './theme/global.css'
+import { useEffect, useState } from 'react'
 
 const App = () => {
+  const themes = createTheme(theme)
+  const [shoppingCard, setShoppingCard] = useState(0)
+
   return (
-    <ThemeProvider theme={createMuiTheme({ direction: "rtl" })}>
+    <ThemeProvider theme={themes}>
       <Router >
-        {window.location.pathname.includes('admin') ? null : <Navbar />}
         <Switch>
-          <Route path="/" exact component={homePage}/>
-          <Route path="/products" component={productsPage}/>
-          <Route path="/shopping" component={shoppingPage}/>
+          <Route path="/" exact><HomePage shoppingCard={shoppingCard} /></Route>
+          <Route path="/products"><ProductsPage /></Route>
+          <Route path="/shopping"><ShoppingPage /></Route>
 
           <Route path="/admin/sign-in" component={ adminSignInPage }/>
           <Route path="/admin/dashboard" exact component={ adminDashboardPage }/>
